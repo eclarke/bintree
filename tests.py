@@ -14,4 +14,6 @@ if __name__ == "__main__":
     assert tree.distance(7) == 4
     assert tree.path(7) == [7, 6, 4, 3, 1]
     
-    print tree.levels()
+    levels = tree.levels()
+    print levels
+    assert levels == {0:1, 1:2, 2:1, 3:2, 4:1}

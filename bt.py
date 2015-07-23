@@ -9,6 +9,8 @@ class BinaryTree:
     _parent = None
     
     def __init__(self, label, left=None, right=None):
+        if not label:
+            return ValueError("Must specify label")
         self.label = label
         self.set_left(left)
         self.set_right(right)
@@ -54,7 +56,6 @@ class BinaryTree:
         return self._parent
 
     def _DFS(self, label):
-        print "Search: {} == {}?".format(self.label, label)
         if self.label == label:
             return self
         else:
@@ -100,29 +101,26 @@ class BinaryTree:
 
     def levels(self, cur_level = 0, max_level = None):
         '''Done via DFS to be a pest'''
-        print "current level: ", cur_level
         levels = {cur_level: 1}
         left = right = {}
         left_max = right_max = 0
         if self.left():
             left = self.left().levels(cur_level+1, max_level)
-            print "left:", left
-            left_max = max(left.keys())
+            if left:
+                left_max = max(left.keys())
         if self.right():
             right = self.right().levels(cur_level + 1, max_level)
-            print "right:", right
-            right_max = max(right.keys())
+            if right:
+                right_max = max(right.keys())
         deepest = max(left_max, right_max)
-        print cur_level+1, deepest
-        if deepest == 0:
-            return levels
-        for level in xrange(cur_level+1, deepest+1):
-            print level
+        for level in xrange(cur_level + 1, deepest + 1):
             levels[level] = left.get(level, 0) + right.get(level, 0)
         return levels
 
     
 def build(t):
+    if t is None:
+        return None
     tree = None
     if isinstance(t, collections.Sequence):
         tree = BinaryTree(t[0], build(t[1]), build(t[2]))
