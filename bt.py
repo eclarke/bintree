@@ -106,16 +106,53 @@ class BinaryTree:
         left_max = right_max = 0
         if self.left():
             left = self.left().levels(cur_level+1, max_level)
-            if left:
-                left_max = max(left.keys())
+            left_max = max(left.keys())
         if self.right():
             right = self.right().levels(cur_level + 1, max_level)
-            if right:
-                right_max = max(right.keys())
+            right_max = max(right.keys())
         deepest = max(left_max, right_max)
         for level in xrange(cur_level + 1, deepest + 1):
             levels[level] = left.get(level, 0) + right.get(level, 0)
         return levels
+
+    def nodes_at_level(self, level):
+        lvls = self.levels(max_level = level)
+        return lvls.get(level, 0)
+
+    def DFS_nr(self, label):
+        '''Depth-first search, nonrecursively.'''
+        stack = []
+        parent = {self.label: None}
+        node = self
+        found = False
+        while True:
+            if node.label == label:
+                found = True
+                break
+            if node.left():
+                stack.append(node.left())
+                parent[node.left().label] = node.label
+            if node.right():
+                stack.append(node.right())
+                parent[node.right().label] = node.label
+            if len(stack) > 0:
+                node = stack.pop()
+            else:
+                break
+        # Find distance
+        if found:
+            path = []
+            this_label = node.label
+            while True:
+                path.append(this_label)
+                print this_label
+                this_label = parent[this_label]
+                if not this_label:
+                    break
+            return path
+        else:
+            raise ValueError("Did not find label '{}' in tree".format(label))
+                
 
     
 def build(t):

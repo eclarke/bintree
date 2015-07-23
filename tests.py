@@ -17,3 +17,10 @@ if __name__ == "__main__":
     levels = tree.levels()
     print levels
     assert levels == {0:1, 1:2, 2:1, 3:2, 4:1}
+
+    assert tree.nodes_at_level(3) == 2
+    assert tree.nodes_at_level(5) == 0
+
+    print tree.distance_np(7)
+    print tree.distance_np(4)
+    print tree.distance_np(8)
